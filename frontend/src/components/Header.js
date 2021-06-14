@@ -6,7 +6,8 @@ import {logOut} from "../actions/userActions";
 
 function Header(props) {
     const userLogin = useSelector(state => state.userLogin)
-    const {userInfo} = userLogin
+    const { userInfo } = userLogin
+    console.log(userInfo)
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
