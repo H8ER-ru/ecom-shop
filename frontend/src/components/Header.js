@@ -1,8 +1,18 @@
 import React from 'react';
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap'
+import {useDispatch, useSelector} from "react-redux";
+import {logOut} from "../actions/userActions";
 
 function Header(props) {
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
+    const dispatch = useDispatch()
+
+    const logoutHandler = () => {
+        dispatch(logOut())
+    }
+
     return (
         <Navbar bg="primary" variant="primary" expand="lg" collapseOnSelect>
             <Container>
@@ -18,11 +28,24 @@ function Header(props) {
                             </Nav.Link>
                         </LinkContainer>
 
-                        <LinkContainer to="/login">
-                            <Nav.Link >
-                                <i className="fas fa-user"/> Login
-                            </Nav.Link>
-                        </LinkContainer>
+                        {userInfo ? (
+                            <NavDropdown title={userInfo.name} id='username'>
+                                <LinkContainer to='/profile'>
+                                    <NavDropdown.Item>
+                                        Profile
+                                    </NavDropdown.Item>
+                                </LinkContainer>
+                                <NavDropdown.Item onClick={logoutHandler}>
+                                    Log Out
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        ): (
+                            <LinkContainer to="/login">
+                                <Nav.Link >
+                                    <i className="fas fa-user"/> Login
+                                </Nav.Link>
+                            </LinkContainer>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
